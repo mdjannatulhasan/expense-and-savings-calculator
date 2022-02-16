@@ -2,6 +2,17 @@
 @tailwind components;
 @tailwind utilities;
 
+/* Common Styles */
+body{
+    @apply font-roboto;
+}
+
+/* Header Style */
 .heading-image{
     max-width: 50px;
+}
+
+/* Placeholder text size decreased */
+::placeholder{
+    @apply text-sm;
 }

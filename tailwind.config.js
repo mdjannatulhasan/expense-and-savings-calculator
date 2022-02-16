@@ -6,6 +6,10 @@ module.exports = {
       center: true,
       padding: '2rem'
     },
+    fontFamily: {
+      montserrat: ['Montserrat', 'sans-serif'],
+      roboto: ['Roboto', 'sans-serif']
+    }
   },
   plugins: [],
 }
