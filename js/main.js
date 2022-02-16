@@ -5,18 +5,23 @@ let clothesCost = 0;
 let savingPercentage = 0;
 let flag = 0;
 
-/*================================================
+/*
+==================================================
     Get elements and intialize into variables
-==================================================*/
+==================================================
+*/
 const calculateBtn = document.getElementById('calculate');
 const saveBtn = document.getElementById('save');
 const warningBtn = document.getElementById('warning');
+const balanceBtn = document.getElementById('balance');
 
 
 
-/*================================================
+/*
+==================================================
                 Input Initialize
-==================================================*/
+==================================================
+*/
 calculateBtn.addEventListener('click', function () {
     flag = 0;
     income = getValue('income');
@@ -25,6 +30,17 @@ calculateBtn.addEventListener('click', function () {
     clothesCost = getValue('clothes');
     if (flag == 0) {
         warningBtn.classList.add('hidden');
+        balanceBtn.classList.remove('text-rose-700');
+    }
+    let totalCost = addCosts();
+    let balance = income - totalCost;
+    document.getElementById('expense').innerText = totalCost;
+    if (balance < 0) {
+        balanceBtn.innerText = "Your expenses is more than your income";
+        balanceBtn.classList.add('text-rose-700');
+    }
+    else {
+        document.getElementById('balance').innerText = balance;
     }
 
 });
@@ -32,18 +48,32 @@ calculateBtn.addEventListener('click', function () {
 
 
 
-/*================================================
+/*
+==================================================
                     Functions
-==================================================*/
+==================================================
+*/
 
 // Input value reading functions
 function getValue(inputId) {
-    var regExp = /[a-zA-Z!$%&*:;#~@]/g;
+
     const inputVal = document.getElementById(inputId).value;
     const floatVal = parseFloat(inputVal);
 
-    if (regExp.test(inputVal)) {
-        console.log("dukhesi ki moja");
+    if (errorHanlding(inputVal, inputId, floatVal)) {
+        return '0';
+    }
+    return floatVal;
+}
+
+/*
+==================================================
+                    Handle Error 
+==================================================
+*/
+function errorHanlding(inputAsString, inputId, floatVal) {
+    var regExp = /[a-zA-Z!$%&*:;#~@]/g;
+    if (regExp.test(inputAsString) || floatVal < 0 || isNaN(floatVal)) {
         const idOfLabel = inputId + 'Label';
         const labelText = document.getElementById(idOfLabel).textContent;
         if (flag == 0) {
@@ -52,10 +82,11 @@ function getValue(inputId) {
 
             flag = 1;
 
-        } return '';
+        } return true;
     }
-    return floatVal;
+    return false;
 }
+
 function addCosts() {
     return foodCost + rent + clothesCost;
 }
