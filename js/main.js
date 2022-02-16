@@ -50,6 +50,8 @@ calculateBtn.addEventListener('click', function () {
 });
 
 saveBtn.addEventListener('click', function () {
+    flag = 0;
+    warningMsg2.classList.add('hidden');
     savingPercentage = getValue('savePercentage', warningMsg2);
     percentOfIncome = (savingPercentage * income) / 100;
     let remainingBalance = balance - percentOfIncome;
@@ -78,6 +80,7 @@ function getValue(inputId, warningElement) {
 
     const inputVal = document.getElementById(inputId).value;
     const floatVal = parseFloat(inputVal);
+    console.log(floatVal);
 
     if (errorHanlding(inputVal, inputId, floatVal, warningElement)) {
         return '0';
