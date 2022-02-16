@@ -2,6 +2,7 @@ let income = 0;
 let foodCost = 0;
 let rent = 0;
 let clothesCost = 0;
+let balance = 0;
 let savingPercentage = 0;
 let flag = 0;
 
@@ -12,7 +13,8 @@ let flag = 0;
 */
 const calculateBtn = document.getElementById('calculate');
 const saveBtn = document.getElementById('save');
-const warningBtn = document.getElementById('warning');
+const warningMsg = document.getElementById('warning');
+const warningMsg2 = document.getElementById('warning2');
 const balanceBtn = document.getElementById('balance');
 
 
@@ -24,16 +26,16 @@ const balanceBtn = document.getElementById('balance');
 */
 calculateBtn.addEventListener('click', function () {
     flag = 0;
-    income = getValue('income');
-    foodCost = getValue('food');
-    rent = getValue('rent');
-    clothesCost = getValue('clothes');
+    income = getValue('income', warningMsg);
+    foodCost = getValue('food', warningMsg);
+    rent = getValue('rent', warningMsg);
+    clothesCost = getValue('clothes', warningMsg);
     if (flag == 0) {
-        warningBtn.classList.add('hidden');
+        warningMsg.classList.add('hidden');
         balanceBtn.classList.remove('text-rose-700');
     }
     let totalCost = addCosts();
-    let balance = income - totalCost;
+    balance = income - totalCost;
     document.getElementById('expense').innerText = totalCost;
     if (balance < 0) {
         balanceBtn.innerText = "Your expenses is more than your income";
@@ -45,7 +47,11 @@ calculateBtn.addEventListener('click', function () {
 
 });
 
+saveBtn.addEventListener('click', function () {
+    savingPercentage = getValue('savePercentage', warningMsg2);
 
+
+});
 
 
 /*
@@ -55,12 +61,12 @@ calculateBtn.addEventListener('click', function () {
 */
 
 // Input value reading functions
-function getValue(inputId) {
+function getValue(inputId, warningElement) {
 
     const inputVal = document.getElementById(inputId).value;
     const floatVal = parseFloat(inputVal);
 
-    if (errorHanlding(inputVal, inputId, floatVal)) {
+    if (errorHanlding(inputVal, inputId, floatVal, warningElement)) {
         return '0';
     }
     return floatVal;
@@ -71,14 +77,14 @@ function getValue(inputId) {
                     Handle Error 
 ==================================================
 */
-function errorHanlding(inputAsString, inputId, floatVal) {
+function errorHanlding(inputAsString, inputId, floatVal, warningElement) {
     var regExp = /[a-zA-Z!$%&*:;#~@]/g;
     if (regExp.test(inputAsString) || floatVal < 0 || isNaN(floatVal)) {
         const idOfLabel = inputId + 'Label';
         const labelText = document.getElementById(idOfLabel).textContent;
         if (flag == 0) {
-            warningBtn.classList.remove('hidden');
-            warningBtn.innerText = "Please enter positive number on '" + labelText + "'";
+            warningElement.classList.remove('hidden');
+            warningElement.innerText = "Please enter positive number on '" + labelText + "'";
 
             flag = 1;
 
