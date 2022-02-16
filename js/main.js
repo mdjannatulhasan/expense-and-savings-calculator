@@ -4,6 +4,7 @@ let rent = 0;
 let clothesCost = 0;
 let balance = 0;
 let savingPercentage = 0;
+let percentOfIncome = 0;
 let flag = 0;
 
 /*
@@ -16,6 +17,7 @@ const saveBtn = document.getElementById('save');
 const warningMsg = document.getElementById('warning');
 const warningMsg2 = document.getElementById('warning2');
 const balanceBtn = document.getElementById('balance');
+const remainingBalanceBtn = document.getElementById('savingAmount');
 
 
 
@@ -42,15 +44,26 @@ calculateBtn.addEventListener('click', function () {
         balanceBtn.classList.add('text-rose-700');
     }
     else {
-        document.getElementById('balance').innerText = balance;
+        balanceBtn.innerText = balance;
     }
 
 });
 
 saveBtn.addEventListener('click', function () {
     savingPercentage = getValue('savePercentage', warningMsg2);
+    percentOfIncome = (savingPercentage * income) / 100;
+    let remainingBalance = balance - percentOfIncome;
+    document.getElementById('remainingBalance').innerText = remainingBalance.toFixed(2);
 
-
+    if (remainingBalance < 0) {
+        remainingBalanceBtn.innerText = "You can not save " + savingPercentage + "%. Please choose a smaller number.";
+        remainingBalanceBtn.classList.add('text-rose-700');
+        document.getElementById('remainingBalance').innerText = 00;
+    }
+    else {
+        remainingBalanceBtn.classList.remove('text-rose-700');
+        remainingBalanceBtn.innerText = percentOfIncome.toFixed(2);
+    }
 });
 
 
@@ -84,7 +97,7 @@ function errorHanlding(inputAsString, inputId, floatVal, warningElement) {
         const labelText = document.getElementById(idOfLabel).textContent;
         if (flag == 0) {
             warningElement.classList.remove('hidden');
-            warningElement.innerText = "Please enter positive number on '" + labelText + "'";
+            warningElement.innerText = "ERROR: Please enter positive number on '" + labelText + "'";
 
             flag = 1;
 
